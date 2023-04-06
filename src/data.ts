@@ -9,6 +9,7 @@ import {SystemContent} from "./spell-config.js";
 
 class DB {
   private static data: User[] = [];
+  private systemContent: string = SystemContent;
 
   /**
    * 添加一个用户, 如果用户已存在则返回已存在的用户
@@ -25,7 +26,7 @@ class DB {
       chatMessage: [
         {
           role: ChatCompletionRequestMessageRoleEnum.System,
-          content: SystemContent
+          content: this.systemContent
         }
       ],
     };
@@ -111,10 +112,14 @@ class DB {
       user.chatMessage = [
         {
           role: ChatCompletionRequestMessageRoleEnum.System,
-          content: SystemContent
+          content: this.systemContent
         }
       ];
     }
+  }
+
+  public setSystemContent(s: string): void {
+    this.systemContent = s
   }
 
   public getAllData(): User[] {

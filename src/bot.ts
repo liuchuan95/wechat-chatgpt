@@ -6,6 +6,7 @@ import {chatgpt, dalle, whisper} from "./openai.js";
 import DBUtils from "./data.js";
 import { regexpEncode } from "./utils.js";
 import { fixReply } from "./spell.js";
+import {SystemContent} from "./spell-config.js";
 enum MessageType {
   Unknown = 0,
   Attachment = 1, // Attach(6),
@@ -40,6 +41,7 @@ export class ChatGPTBot {
   ready = false;
   setBotName(botName: string) {
     this.botName = botName;
+    DBUtils.setSystemContent(SystemContent.replace('牛牛', botName));
   }
   get chatGroupTriggerRegEx(): RegExp {
     return new RegExp(`^@${regexpEncode(this.botName)}\\s`);
@@ -269,9 +271,19 @@ export class ChatGPTBot {
       }
       return;
     }
-    let fixReplyText = fixReply(rawText)
+    let fixReplyText = fixReply(rawText, this.botName)
     if (fixReplyText) {
-      this.trySay(talker, fixReplyText)
+      if (privateChat) {
+        this.trySay(talker, fixReplyText)
+      } else{
+        if (!this.disableGroupMessage){
+          const result = `@${talker.name()} \n ${fixReplyText}`;
+          this.trySay(room, result)
+        } else {
+          return;
+        }
+      }
+     
       return
     }
     // 使用DallE生成图片

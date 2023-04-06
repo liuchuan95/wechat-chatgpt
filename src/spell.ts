@@ -1,15 +1,17 @@
 import { FixSpell } from './spell-config.js'
 
-export const fixReply = (rawText: string) => {
+export const fixReply = (rawText: string, botName: string) => {
   let rtnText = ''
   for (let fix of FixSpell) {
     if (fix.reg) {
       if (fix.triger.test(rawText)) {
-        rtnText = fix.spell
+        rtnText = fix.spell.replaceAll('牛牛', botName)
       }
     } else {
-      if (rawText === fix.triger) {
-        rtnText = fix.spell
+      let triger = fix.triger
+      if (fix.preBotName) triger = '@' + botName + triger
+      if (rawText === triger) {
+        rtnText = fix.spell.replaceAll('牛牛', botName)
       }
     }
   }
