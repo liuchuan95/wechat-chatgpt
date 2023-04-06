@@ -89,11 +89,11 @@ export const FixSpellRoom = [
     spell: JoinRoomMsg,
     noAite: true
   },
-  // {
-  //   triger: new RegExp('".+"邀请".+"加入了群聊'),
-  //   reg: true,
-  //   spell: NewJoinMsg
-  // },
+  {
+    triger: new RegExp('".+"邀请".+"加入了群聊'),
+    reg: true,
+    spell: NewJoinMsg
+  },
 ]
 
 
