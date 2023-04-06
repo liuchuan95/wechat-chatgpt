@@ -199,7 +199,8 @@ export class ChatGPTBot {
     return (
       talker.self() ||
       // TODO: add doc support
-      !(messageType == MessageType.Text || messageType == MessageType.Audio) ||
+      // !(messageType == MessageType.Text || messageType == MessageType.Audio) ||
+      !(messageType == MessageType.Text) ||
       talker.name() === "微信团队" ||
       // 语音(视频)消息
       text.includes("收到一条视频/语音聊天消息，请在手机上查看") ||
@@ -268,20 +269,20 @@ export class ChatGPTBot {
       return;
     }
     // 使用DallE生成图片
-    if (rawText.startsWith("/img")){
-      console.log(`🤖 Image: ${rawText}`)
-      const imgContent = rawText.slice(4)
-      if (privateChat) {
-        let url = await dalle(talker.name(), imgContent) as string;
-        const fileBox = FileBox.fromUrl(url)
-        message.say(fileBox)
-      }else{
-        let url = await dalle(await room.topic(), imgContent) as string;
-        const fileBox = FileBox.fromUrl(url)
-        message.say(fileBox)
-      }
-      return;
-    }
+    // if (rawText.startsWith("/img")){
+    //   console.log(`🤖 Image: ${rawText}`)
+    //   const imgContent = rawText.slice(4)
+    //   if (privateChat) {
+    //     let url = await dalle(talker.name(), imgContent) as string;
+    //     const fileBox = FileBox.fromUrl(url)
+    //     message.say(fileBox)
+    //   }else{
+    //     let url = await dalle(await room.topic(), imgContent) as string;
+    //     const fileBox = FileBox.fromUrl(url)
+    //     message.say(fileBox)
+    //   }
+    //   return;
+    // }
     if (this.triggerGPTMessage(rawText, privateChat)) {
       const text = this.cleanMessage(rawText, privateChat);
       if (privateChat) {
