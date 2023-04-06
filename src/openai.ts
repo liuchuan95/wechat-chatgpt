@@ -27,7 +27,14 @@ async function chatgpt(username:string,message: string): Promise<string> {
     model: "gpt-3.5-turbo",
     messages: messages,
     temperature: config.temperature,
-  });
+  }
+  // , {
+  //   proxy: {
+  //     host: '127.0.0.1',
+  //     port: 7890
+  //   }
+  // }
+  );
   let assistantMessage = "";
   try {
     if (response.status === 200) {

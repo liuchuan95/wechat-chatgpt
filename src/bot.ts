@@ -5,6 +5,7 @@ import {FileBox} from "file-box";
 import {chatgpt, dalle, whisper} from "./openai.js";
 import DBUtils from "./data.js";
 import { regexpEncode } from "./utils.js";
+import { fixReply } from "./spell.js";
 enum MessageType {
   Unknown = 0,
   Attachment = 1, // Attach(6),
@@ -267,6 +268,11 @@ export class ChatGPTBot {
         await this.command(room, cmdContent);
       }
       return;
+    }
+    let fixReplyText = fixReply(rawText)
+    if (fixReplyText) {
+      this.trySay(talker, fixReplyText)
+      return
     }
     // 使用DallE生成图片
     // if (rawText.startsWith("/img")){

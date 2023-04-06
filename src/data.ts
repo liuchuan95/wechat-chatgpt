@@ -1,6 +1,7 @@
 import {ChatCompletionRequestMessage, ChatCompletionRequestMessageRoleEnum} from "openai";
 import {User} from "./interface";
 import {isTokenOverLimit} from "./utils.js";
+import {SystemContent} from "./spell-config.js";
 
 /**
  * 使用内存作为数据库
@@ -24,7 +25,7 @@ class DB {
       chatMessage: [
         {
           role: ChatCompletionRequestMessageRoleEnum.System,
-          content: "You are a helpful assistant."
+          content: SystemContent
         }
       ],
     };
@@ -110,7 +111,7 @@ class DB {
       user.chatMessage = [
         {
           role: ChatCompletionRequestMessageRoleEnum.System,
-          content: "You are a helpful assistant."
+          content: SystemContent
         }
       ];
     }
