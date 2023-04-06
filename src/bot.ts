@@ -5,7 +5,7 @@ import {FileBox} from "file-box";
 import {chatgpt, dalle, whisper} from "./openai.js";
 import DBUtils from "./data.js";
 import { regexpEncode } from "./utils.js";
-import { fixReply } from "./spell.js";
+import { fixReply, fixRoomReply } from "./spell.js";
 import {SystemContent} from "./spell-config.js";
 enum MessageType {
   Unknown = 0,
@@ -271,20 +271,22 @@ export class ChatGPTBot {
       }
       return;
     }
-    let fixReplyText = fixReply(rawText, this.botName)
-    if (fixReplyText) {
-      if (privateChat) {
-        this.trySay(talker, fixReplyText)
-      } else{
-        if (!this.disableGroupMessage){
-          const result = `@${talker.name()} \n ${fixReplyText}`;
-          this.trySay(room, result)
-        } else {
-          return;
-        }
+    if (privateChat) {
+      let fixReplyText = fixReply(rawText, this.botName)
+      if (fixReplyText) {
+        talker.say(fixReplyText)
+        return
       }
-     
-      return
+    } else {
+      if (!this.disableGroupMessage){
+        let fixReplyText = fixRoomReply(rawText, this.botName, talker.name())
+        if (fixReplyText) {
+          room.say(fixReplyText)
+          return
+        }
+      } else {
+        return
+      }
     }
     // 使用DallE生成图片
     // if (rawText.startsWith("/img")){
