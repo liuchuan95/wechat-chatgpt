@@ -28,12 +28,12 @@ async function chatgpt(username:string,message: string): Promise<string> {
     messages: messages,
     temperature: config.temperature,
   }
-  , {
-    proxy: {
-      host: '127.0.0.1',
-      port: 7890
-    }
-  }
+  // , {
+  //   proxy: {
+  //     host: '127.0.0.1',
+  //     port: 7890
+  //   }
+  // }
   );
   let assistantMessage = "";
   try {
