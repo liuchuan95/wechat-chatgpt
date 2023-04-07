@@ -91,9 +91,10 @@ export const FixSpellRoom = [
     noAite: true
   },
   {
-    triger: new RegExp('".+"邀请".+"加入了群聊'),
+    triger: new RegExp('"(.+)"邀请"(.+)"加入了群聊'),
     reg: true,
-    spell: NewJoinMsg
+    spell: NewJoinMsg,
+    joinRoom: true,
   },
 ]
 
