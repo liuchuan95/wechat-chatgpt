@@ -18,6 +18,12 @@ export const fixRoomReply = (rawText: string, botName: string, talkerName: strin
     if (fix.reg) {
       if (fix.triger.test(rawText)) {
         rtnText = fix.spell.replaceAll('牛牛', botName)
+        if (fix.joinRoom) {
+          const matches = fix.triger.exec(rawText)
+          if (matches?.length) {
+            if (matches[2]) rtnText = `@${matches[2]} ${rtnText}`
+          }
+        }
       }
     } else {
       let triger = fix.triger
